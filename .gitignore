@@ -3,4 +3,10 @@ node_modules/
 dist/
 .vercel/
 data/raw/
+data/processed/
 __pycache__/
+*.pyc
+.venv/
+venv/
+.DS_Store
+Thumbs.db

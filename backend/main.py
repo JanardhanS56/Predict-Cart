@@ -35,6 +35,18 @@ def load_data():
     if os.path.exists(products_path):
         products_df = pd.read_csv(products_path).fillna("")
         
+    def build_mapping(series):
+        unique_vals = series.dropna().unique()
+        return {val: i for i, val in enumerate(unique_vals)}
+
+    if users_df is not None:
+        user_map = build_mapping(users_df['user_id'])
+        users_df['user_id'] = users_df['user_id'].map(user_map)
+        
+    if products_df is not None:
+        product_map = build_mapping(products_df['product_id'])
+        products_df['product_id'] = products_df['product_id'].map(product_map)
+        
     # Load predictions and payload to map users to products
     payload_path = os.path.join(data_dir, 'processed', 'kumo_payload.json')
     pred_path = os.path.join(data_dir, 'processed', 'prediction_response.json')
@@ -117,3 +129,28 @@ async def get_recommendations(req: RecommendationRequest):
                 enriched_recs.append(p_dict)
     
     return {"user_id": uid, "recommendations": enriched_recs}
+
+class LivePredictionRequest(BaseModel):
+    session_interactions: list
+
+@app.post("/api/predict_live")
+async def predict_live(req: LivePredictionRequest):
+    """Simulates a live API prediction by taking in a session's interacted products and returning mock predictions."""
+    import random
+    import asyncio
+    
+    # Simulate network latency and model inference time
+    await asyncio.sleep(2.0)
+    
+    if products_df is None or products_df.empty:
+        return {"recommendations": []}
+        
+    # Pick 4 random products as "predictions"
+    selected = products_df.sample(n=4).to_dict(orient="records")
+    
+    # Assign mock scores descending
+    base_score = 0.85
+    for i, p in enumerate(selected):
+        p['recommendation_score'] = base_score - (i * 0.15) + random.uniform(0, 0.05)
+        
+    return {"recommendations": selected}
