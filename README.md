@@ -1,4 +1,4 @@
-# PredictCart Beta — Recommendation Workbench
+# Predict-Cart: Recommendation Workbench
 
 > A full-stack demonstration of **NVIDIA Kumo Relational** graph ML for real-time "Next Best Offer" product recommendations.
 
