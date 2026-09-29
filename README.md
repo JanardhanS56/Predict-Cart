@@ -18,16 +18,20 @@ PredictCart takes six relational e-commerce tables (users, products, sessions, i
 ## Screenshots
 
 **Empty State — Select a User Profile**
-![PredictCart empty state with user dropdown](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/1-empty-state.png)
+![PredictCart empty state with user dropdown](<img width="1887" height="1013" alt="Screenshot 2026-09-29 150612" src="https://github.com/user-attachments/assets/2504afc5-776a-452f-9163-9e6606fca4e6" />
+)
 
-**User Selected — View AI-Ranked Next Best Offers**
-![PredictCart showing personalized recommendations grid](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/2-recommendations.png)
+**User Selected**
+![PredictCart showing personalized recommendations grid](<img width="1890" height="773" alt="Screenshot 2026-09-29 150631" src="https://github.com/user-attachments/assets/326b02ae-0018-4d22-b957-e8e8cf26056d" />
+)
 
 **Live Shopping Simulation — Add Interactions & Trigger Prediction**
-![PredictCart live simulation with product selection and prediction results](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/3-live-simulation.png)
+![PredictCart live simulation with product selection and prediction results](<img width="1887" height="1012" alt="Screenshot 2026-09-29 150647" src="https://github.com/user-attachments/assets/246c9bbb-7bf6-4671-9cbd-44edfac8cf5a" />
+)
 
 **Real-Time Predictions — Model Confidence & Product Rankings**
-![PredictCart live predictions with confidence scores and detailed product cards](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/4-live-predictions.png)
+![PredictCart live predictions with confidence scores and detailed product cards](<img width="1897" height="1025" alt="Screenshot 2026-09-29 150728" src="https://github.com/user-attachments/assets/9b9f376d-ebe0-4127-9708-3a1a4d1741b6" />
+)
 
 ---
 
