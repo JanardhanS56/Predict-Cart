@@ -18,16 +18,16 @@ PredictCart takes six relational e-commerce tables (users, products, sessions, i
 ## Architecture
 
 ```
-┌─────────────────────┐     ┌──────────────────┐     ┌─────────────────────┐
-│   Data Pipeline      │────▶│  FastAPI Backend  │────▶│   Frontend SPA      │
-│  scripts/            │     │  backend/main.py  │     │  frontend/          │
-│  prepare_payload.py  │     │  :8000            │     │  :3000              │
-│  predict.py          │     │                  │     │  Vanilla JS +       │
-│  eval.py             │     │  /api/users       │     │  TailwindCSS        │
-└─────────────────────┘     │  /api/products    │     └─────────────────────┘
-                             │  /api/recommendations│
-                             │  /api/predict_live│
-                             └──────────────────┘
+┌─────────────────────┐       ┌──────────────----────┐     ┌─────────────────────┐
+│   Data Pipeline      │────▶│  FastAPI Backend     │────▶│   Frontend SPA      │
+│  scripts/            │      │  backend/main.py     │     │  frontend/          │
+│  prepare_payload.py  │      │  :8000               │     │  :3000              │
+│  predict.py          │      │                      │     │  Vanilla JS +       │
+│  eval.py             │      │  /api/users          │     │  TailwindCSS        │
+└─────────────────────┘       │  /api/products       │     └─────────────────────┘
+                              │  /api/recommendations│
+                              │  /api/predict_live   │
+                              └──────────────----────┘
 ```
 
 ## Project Structure
