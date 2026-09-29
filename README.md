@@ -15,19 +15,35 @@ PredictCart takes six relational e-commerce tables (users, products, sessions, i
 
 ---
 
+## Screenshots
+
+**Empty State — Select a User Profile**
+![PredictCart empty state with user dropdown](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/1-empty-state.png)
+
+**User Selected — View AI-Ranked Next Best Offers**
+![PredictCart showing personalized recommendations grid](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/2-recommendations.png)
+
+**Live Shopping Simulation — Add Interactions & Trigger Prediction**
+![PredictCart live simulation with product selection and prediction results](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/3-live-simulation.png)
+
+**Real-Time Predictions — Model Confidence & Product Rankings**
+![PredictCart live predictions with confidence scores and detailed product cards](https://github.com/JanardhanS56/Predict-Cart/raw/main/screenshots/4-live-predictions.png)
+
+---
+
 ## Architecture
 
 ```
-┌─────────────────────┐       ┌──────────────----────┐     ┌─────────────────────┐
-│   Data Pipeline      │────▶│  FastAPI Backend     │────▶│   Frontend SPA      │
-│  scripts/            │      │  backend/main.py     │     │  frontend/          │
-│  prepare_payload.py  │      │  :8000               │     │  :3000              │
-│  predict.py          │      │                      │     │  Vanilla JS +       │
-│  eval.py             │      │  /api/users          │     │  TailwindCSS        │
-└─────────────────────┘       │  /api/products       │     └─────────────────────┘
+┌─────────────────────┐       ┌──────────────────────┐     ┌────────────────────┐
+│   Data Pipeline     │────▶  │  FastAPI Backend     │────▶│   Frontend SPA      │
+│  scripts/           │       │  backend/main.py     │     │  frontend/          │
+│  prepare_payload.py │       │  :8000               │     │  :3000              │
+│  predict.py         │       │                      │     │  Vanilla JS +       │
+│  eval.py            │       │  /api/users          │     │  TailwindCSS        │
+└─────────────────────┘       │  /api/products       │     └────────────────────┘
                               │  /api/recommendations│
                               │  /api/predict_live   │
-                              └──────────────----────┘
+                              └──────────────────────┘
 ```
 
 ## Project Structure
@@ -53,6 +69,35 @@ PredictCart Beta/
     ├── eval.py                 # Calculates Hit Rate @ K
     └── requirements.txt        # Python deps
 ```
+
+---
+
+## Quick Start
+
+```bash
+# Clone & setup
+git clone https://github.com/JanardhanS56/Predict-Cart.git
+cd Predict-Cart
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+
+# Install deps
+pip install -r scripts/requirements.txt
+pip install fastapi uvicorn
+
+# Configure API key
+cp .env.example .env
+# Edit .env and add: NVIDIA_API_KEY="nvapi-xxxx"
+
+# Start backend (Terminal 1)
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
+
+# Start frontend (Terminal 2)
+cd frontend
+python -m http.server 3000
+```
+
+Open **http://localhost:3000** in your browser.
 
 ---
 
@@ -126,91 +171,48 @@ Open **http://localhost:3000** in your browser.
 
 ---
 
+## Why This Project Matters
+
+- **Demonstrates Real-World ML Ops**: Not a Jupyter notebook—this is a complete pipeline from raw e-commerce CSVs → relational graph construction → NVIDIA API inference → FastAPI backend → interactive SPA.
+- **Shows Product Thinking**: Built a premium UX (glassmorphism, live simulation, confidence meter) to make ML predictions tangible and explorable, not just abstract scores.
+- **NVIDIA Kumo Deep-Dive**: Specifically targets the "Next Best Offer" e-commerce use case with proper ego-graph construction and relational feature engineering.
+- **Full-Stack Ownership**: Designed the relational schema, scripted the data pipeline, built the FastAPI backend, and crafted a modern Vanilla JS frontend with TailwindCSS.
+
+---
+
 ## Model Notes
 
-The NVIDIA Kumo Relational model outputs **per-item probabilities** that sum to 1.0 across the full product catalog. For a catalog of ~1,000+ items, a score of `0.04` (4%) is **extremely high confidence** — it means the model ranks that product among the top 1–2% of all items. The confidence meter is scaled accordingly (≥4% = High, 1–4% = Medium, <1% = Low).
+The NVIDIA Kumo Relational model outputs **per-item probabilities** that sum to 1.0 across the full product catalog. For a catalog of ~1,000+ items, a score of `0.04` (4%) is **extremely high confidence**. The model learns from:
+
+- **User attributes** (age, gender, location)
+- **Purchase history** (items, recency, frequency)
+- **Browsing behavior** (views, clicks, session length)
+- **Product relationships** (category, price, rating, brand)
+- **Temporal patterns** (seasonality, trends)
+
+---
+
+## Key Technical Decisions
+
+1. **Relational Graph as ETL**: Why ego-graphs work for recommendation—learned how Kumo expects data shaped vs. raw flat tables. The key insight is that relational patterns (e.g., "users who bought X also viewed Y") matter more than individual attributes.
+
+2. **Live Simulation UX**: Realized static rankings don't sell the model. Added interactive product add-to-cart → live prediction flow to show causality: *user action → updated graph → new predictions*.
+
+3. **Vanilla JS Frontend**: Skipped React/Vue to keep dependencies minimal and demonstrate raw DOM/fetch mastery. TailwindCSS CDN for fast iteration without build tooling.
+
+---
+
+## Future Enhancements
+
+- [ ] Add user segmentation & cohort analysis views
+- [ ] Expose Kumo confidence thresholds as interactive sliders
+- [ ] Cache API responses to reduce quota burn
+- [ ] Multi-user session replay (view others' shopping carts in real-time)
+- [ ] Export recommendations as CSV/JSON for downstream analytics
+- [ ] A/B testing framework to validate predicted offers vs. random
 
 ---
 
 ## License
 
 MIT — free to use, fork, and extend.
-
-
-A full-stack demonstration of NVIDIA's Kumo Relational model for predicting "Next Best Offer" product recommendations. This project builds a relational graph from raw e-commerce CSVs (users, products, sessions, interactions, purchases, reviews), queries the NVIDIA Kumo Relational API, and displays the personalized recommendations in a beautiful, premium Single Page Application (SPA).
-
-## Architecture & Phases
-
-1. **Data Pipeline (`scripts/`)**
-   - **`prepare_payload.py`**: Extracts per-user ego-graphs from the relational CSVs and packs them into the exact JSON schema required by the Kumo Relational model.
-   - **`predict.py`**: Posts the payload to the NVIDIA API and saves the inference results.
-   - **`eval.py`**: Calculates the Mock Hit Rate of the model's predictions.
-2. **Backend API (`backend/main.py`)**
-   - A FastAPI application that serves the mock users, the product catalog, and the pre-computed Kumo recommendations to the frontend.
-3. **Frontend UI (`frontend/`)**
-   - A modern, responsive SPA built with Vanilla JS, HTML, and TailwindCSS (via CDN).
-
-## Project Structure
-
-```text
-PredictCart Beta/
-├── .env                  # NVIDIA_API_KEY
-├── README.md             # Setup & run instructions
-├── backend/
-│   └── main.py           # FastAPI server
-├── frontend/
-│   ├── index.html        # SPA layout with Tailwind
-│   └── app.js            # Frontend logic
-├── data/
-│   ├── raw/              # The 6 CSV files
-│   └── processed/        # Generated payload & API response
-└── scripts/
-    ├── prepare_payload.py
-    ├── predict.py
-    ├── eval.py
-    └── requirements.txt
-```
-
-## Setup Instructions
-
-1. **Install Python Dependencies**
-   Ensure you have Python 3.9+ installed, then install the dependencies:
-   ```bash
-   pip install -r scripts/requirements.txt
-   pip install fastapi uvicorn
-   ```
-
-2. **Configure API Key**
-   Create a `.env` file in the root directory (copy `.env.example` if available) and add your NVIDIA API key:
-   ```env
-   NVIDIA_API_KEY="nvapi-your-key-here"
-   ```
-
-3. **Run the Data Pipeline (Optional, pre-computed data is saved)**
-   To regenerate the payload and fetch new predictions from the NVIDIA API:
-   ```bash
-   python scripts/prepare_payload.py
-   python scripts/predict.py
-   python scripts/eval.py
-   ```
-
-4. **Start the Backend API**
-   Run the FastAPI server from the root directory:
-   ```bash
-   python -m uvicorn backend.main:app --host 0.0.0.0 --port 8000
-   ```
-
-5. **Start the Frontend UI**
-   In a new terminal window, serve the frontend directory using a simple HTTP server:
-   ```bash
-   cd frontend
-   python -m http.server 3000
-   ```
-   Open `http://localhost:3000` in your browser.
-
-## Features
-
-- **Relational Graph Extraction**: Converts flat tables into the ego-graph format required by Kumo.
-- **Robust Data Handling**: Handles complex datatypes, timestamps, and schema validations to prevent `422 Unprocessable Entity` errors from the API.
-- **Premium UI**: Uses a glassmorphism design, subtle mesh gradients, and smooth CSS transitions.
-- **Color-coded Confidence**: The Next Best Offer score is visually represented (Green for high, Yellow for medium, Gray for low).
