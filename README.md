@@ -17,21 +17,11 @@ PredictCart takes six relational e-commerce tables (users, products, sessions, i
 
 ## Screenshots
 
-**Empty State — Select a User Profile**
-![PredictCart empty state with user dropdown](<img width="1887" height="1013" alt="Screenshot 2026-09-29 150612" src="https://github.com/user-attachments/assets/2504afc5-776a-452f-9163-9e6606fca4e6" />
-)
+<img width="1890" height="773" alt="image" src="https://github.com/user-attachments/assets/d3c0237e-65fd-47cf-afae-93de6d152136" />
 
-**User Selected**
-![PredictCart showing personalized recommendations grid](<img width="1890" height="773" alt="Screenshot 2026-09-29 150631" src="https://github.com/user-attachments/assets/326b02ae-0018-4d22-b957-e8e8cf26056d" />
-)
+<img width="1887" height="1012" alt="image" src="https://github.com/user-attachments/assets/b9a5a483-11ab-4570-8bcf-2678a5507d40" />
 
-**Live Shopping Simulation — Add Interactions & Trigger Prediction**
-![PredictCart live simulation with product selection and prediction results](<img width="1887" height="1012" alt="Screenshot 2026-09-29 150647" src="https://github.com/user-attachments/assets/246c9bbb-7bf6-4671-9cbd-44edfac8cf5a" />
-)
-
-**Real-Time Predictions — Model Confidence & Product Rankings**
-![PredictCart live predictions with confidence scores and detailed product cards](<img width="1897" height="1025" alt="Screenshot 2026-09-29 150728" src="https://github.com/user-attachments/assets/9b9f376d-ebe0-4127-9708-3a1a4d1741b6" />
-)
+<img width="1897" height="1025" alt="image" src="https://github.com/user-attachments/assets/80b32200-5cf4-47a9-9060-50389d14ac5c" />
 
 ---
 
